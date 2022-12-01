@@ -1,0 +1,155 @@
+# Values configuring Thingpark Enterprise deployment for Amazon Elastic Kubernetes Service
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## Node selector for Thingpark Enterprise deployment on only 3 nodes
+nodeSelectorKey: &nodeSelectorKey "thingpark.actility.com/nodegroup-name"
+nodeSelectorValue: &nodeSelectorValue "tpw"
+nodeSelector: &nodeSelector
+    thingpark.enterprise.actility.com/nodegroup-name: *nodeSelectorValue
+
+tolerations: &tolerations
+  - key: *nodeSelectorKey
+    operator: "Equal"
+    value: *nodeSelectorValue
+    effect: "NoSchedule"
+
+## thingpark-data-controllers
+psmdb-operator:
+  tolerations: *tolerations
+  nodeSelector: *nodeSelector
+strimzi-kafka-operator:
+  tolerations: *tolerations
+  nodeSelector: *nodeSelector
+
+## thingpark-data
+mariadb-galera:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+kafka-cluster:
+  tolerations: *tolerations
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: *nodeSelectorKey
+            operator: In
+            values:
+            - *nodeSelectorValue
+mongo-replicaset:
+  replicaSet:
+    nodeSelector: *nodeSelector
+    tolerations: *tolerations
+  arbiter:
+    nodeSelector: *nodeSelector
+    tolerations: *tolerations
+zookeeper:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+
+
+## thingpark-enterprise-controllers
+
+cert-manager:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+  webhook:
+    nodeSelector: *nodeSelector
+    tolerations: *tolerations
+  cainjector:
+    nodeSelector: *nodeSelector
+    tolerations: *tolerations
+
+ingress-nginx:
+  controller:
+    nodeSelector: *nodeSelector
+    tolerations: *tolerations
+    admissionWebhooks:
+      patch:
+        tolerations: *tolerations
+
+## thingpark-enterprise
+
+acmeSolvers:
+  - http01:
+      ingress:
+        class: nginx-tpe
+        podTemplate:
+          spec:
+            nodeSelector: *nodeSelector
+            tolerations: *tolerations
+
+cups-server:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+locsolver:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+lrc:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+lrc-proxy:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+nssa:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+pum:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+portal:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+shellinabox:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+smp:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+support:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+sql-proxy:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+tpw-guis:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+twa:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+twa-admin:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+twa-alarm-notif:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+twa-dev:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+twa-dev-task-fc:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+twa-ran:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+twa-task-res:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+task-notif-ws:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+tpx-flow:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+tpdx:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+wireless-pki:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+wlogger:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+

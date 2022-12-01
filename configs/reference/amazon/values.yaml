@@ -1,0 +1,52 @@
+# Values configuring Thingpark Enterprise deployment for Amazon Elastic Kubernetes Service
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+  storageType: "aws-ebs-gp2"
+
+## Persistent Volume Claim setting to use EBS volumes for persistence
+lrc:
+  persistence:
+    storageClass: "thingpark-csi-gp2-ext4"
+    ftpStorageClass: "thingpark-csi-gp2-xfs"
+
+node-red:
+  persistence:
+    storageClass: "thingpark-csi-gp2-xfs"
+
+
+## Data stack configuration
+kafka-cluster:
+  kafka:
+    persistence:
+      local: false
+      storageClass: "thingpark-csi-gp2-xfs"
+
+  zookeeper:
+    persistence:
+      local: false
+      storageClass: "thingpark-csi-gp2-xfs"
+
+mongo-replicaset:
+  persistence:
+    local: false
+    storageClass: "thingpark-csi-gp2-xfs"
+
+zookeeper:
+  persistence:
+    storageClass: "thingpark-csi-gp2-xfs"
+
+mariadb-galera:
+  persistence:
+    storageClass: "thingpark-csi-gp2-xfs"
+
+# Ingress nginx service custom annotation for AWS Load Balancer and DNS integrations
+# Set external-dns.alpha.kubernetes.io/hostname annotation value with global.dnsHostname
+ingress-nginx:
+  controller:
+    service:
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+        service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '60'
+        service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb

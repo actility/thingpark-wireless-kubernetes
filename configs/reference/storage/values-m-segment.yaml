@@ -1,0 +1,39 @@
+---
+kafka-cluster:
+  kafka:
+    persistence:
+      local: false
+      storageSize: 15Gi
+  zookeeper:
+    persistence:
+      local: false
+      storageSize: 5Gi
+
+mongo-replicaset:
+  persistence:
+    local: false
+    size: 15Gi
+
+zookeeper:
+  persistence:
+    size: 5Gi
+
+mariadb-galera:
+  persistence:
+    size: 5Gi
+
+lrc:
+  persistence:
+    size: 5Gi
+    ftpSize: 10Gi
+
+node-red:
+  persistence:
+    size: 5Gi
+
+
+
+
+
+
+

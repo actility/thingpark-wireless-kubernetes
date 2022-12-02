@@ -10,11 +10,6 @@ lrc:
     storageClass: "thingpark-csi-gp2-ext4"
     ftpStorageClass: "thingpark-csi-gp2-xfs"
 
-node-red:
-  persistence:
-    storageClass: "thingpark-csi-gp2-xfs"
-
-
 ## Data stack configuration
 kafka-cluster:
   kafka:

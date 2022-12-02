@@ -35,12 +35,12 @@ lrc:
     storageClass: "thingpark-csi-premium-lrs-ext4"
     ftpStorageClass: "thingpark-csi-standard-lrs-xfs"
 
-node-red:
-  persistence:
-    storageClass: "thingpark-csi-standard-lrs-xfs"
-
-
-
+# Ingress nginx service custom annotation for Azure Load Balancer configuration
+ingress-nginx:
+  controller:
+    service:
+      annotations:
+        service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: "/healthz"
 
 
 

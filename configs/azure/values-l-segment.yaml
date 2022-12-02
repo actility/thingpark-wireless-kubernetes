@@ -1,12 +1,12 @@
-# Values configuring Thingpark Enterprise deployment for Amazon Elastic Kubernetes Service
+# Values configuring Thingpark deployment for Amazon Elastic Kubernetes Service
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-## Node selector for Thingpark Enterprise deployment on only 3 nodes
+## Node selector for Thingpark deployment on only 3 nodes
 nodeSelectorKey: &nodeSelectorKey "thingpark.actility.com/nodegroup-name"
 nodeSelectorValue: &nodeSelectorValue "tpw"
 nodeSelector: &nodeSelector
-  thingpark.enterprise.actility.com/nodegroup-name: *nodeSelectorValue
+  thingpark.actility.com/nodegroup-name: *nodeSelectorValue
 tolerations: &tolerations
   - key: *nodeSelectorKey
     operator: "Equal"
@@ -23,7 +23,7 @@ strimzi-kafka-operator:
 mariadb-galera:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-data
+  priorityClassName: thingpark-data-high
   resources:
     limits:
       memory: 1040Mi
@@ -182,7 +182,7 @@ kafka-cluster:
                 operator: In
                 values:
                   - *nodeSelectorValue
-  priorityClassName: thingpark-enterprise-data
+  priorityClassName: thingpark-data-high
   kafka:
     resources:
       limits:
@@ -208,14 +208,14 @@ mongo-replicaset:
     resources:
       limits:
         memory: 5440Mi
-    priorityClassName: thingpark-enterprise-data
+    priorityClassName: thingpark-data-high
   arbiter:
     nodeSelector: *nodeSelector
     tolerations: *tolerations
     resources:
       limits:
         memory: 200Mi
-    priorityClassName: thingpark-enterprise-data
+    priorityClassName: thingpark-data-low
   persistence:
     local: false
     size: 25Gi
@@ -223,7 +223,7 @@ mongo-replicaset:
 zookeeper:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-data
+  priorityClassName: thingpark-data-high
   resources:
     limits:
       memory: 150Mi
@@ -242,7 +242,7 @@ cert-manager:
   cainjector:
     nodeSelector: *nodeSelector
     tolerations: *tolerations
-# Configuration for controllers
+# Ingress nginx service custom annotation for Azure Load Balancer configuration
 ingress-nginx:
   controller:
     nodeSelector: *nodeSelector
@@ -250,10 +250,13 @@ ingress-nginx:
     admissionWebhooks:
       patch:
         tolerations: *tolerations
-    priorityClassName: thingpark-enterprise-data-path
+    priorityClassName: thingpark-data-path
     resources:
       limits:
         memory: 384Mi
+    service:
+      annotations:
+        service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: "/healthz"
 ## thingpark-enterprise
 acmeSolvers:
   - http01:
@@ -266,15 +269,18 @@ acmeSolvers:
 cups-server:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 1
   resources:
     limits:
       memory: 60Mi
+db-manager:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
 locsolver:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 1
   resources:
     limits:
@@ -283,7 +289,7 @@ locsolver:
 lrc:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   replicaCount: 2
   lrc:
     resources:
@@ -318,7 +324,7 @@ lrc:
 lrc-proxy:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   replicaCount: 2
   resources:
     limits:
@@ -326,7 +332,7 @@ lrc-proxy:
 nssa:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   networkSurvey:
     replicaCount: 1
     resources:
@@ -343,7 +349,7 @@ pum:
 portal:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
@@ -351,7 +357,7 @@ portal:
 shellinabox:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 1
   resources:
     limits:
@@ -359,7 +365,7 @@ shellinabox:
 smp:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
@@ -367,7 +373,7 @@ smp:
 support:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 1
   resources:
     limits:
@@ -375,7 +381,7 @@ support:
 sql-proxy:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   replicaCount: 2
   resources:
     limits:
@@ -383,7 +389,7 @@ sql-proxy:
 tpw-guis:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
@@ -391,7 +397,7 @@ tpw-guis:
 twa:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
@@ -399,7 +405,7 @@ twa:
 twa-admin:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
@@ -407,7 +413,7 @@ twa-admin:
 twa-alarm-notif:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 1
   resources:
     limits:
@@ -415,7 +421,7 @@ twa-alarm-notif:
 twa-dev:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
@@ -423,7 +429,7 @@ twa-dev:
 twa-dev-task-fc:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
@@ -431,7 +437,7 @@ twa-dev-task-fc:
 twa-ran:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
@@ -439,7 +445,7 @@ twa-ran:
 twa-task-res:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
@@ -447,7 +453,7 @@ twa-task-res:
 task-notif-ws:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 1
   resources:
     limits:
@@ -455,7 +461,7 @@ task-notif-ws:
 tpx-flow:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   engine:
     replicaCount: 2
     resources:
@@ -489,7 +495,7 @@ tpx-flow:
 tpdx:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   replicaCount: 2
   resources:
     limits:
@@ -497,7 +503,7 @@ tpdx:
 wireless-pki:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
@@ -505,11 +511,18 @@ wireless-pki:
 wlogger:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-  priorityClassName: thingpark-enterprise-services
+  priorityClassName: thingpark-services
   replicaCount: 2
   resources:
     limits:
       memory: 180Mi
+# To reconfigure the thingpark-enterprise-controller
+priorityClasss:
+  dataPath:
+    name: thingpark-data-path
+    description: "PriorityClass for data path pods. Value must be the highest of both data/application stack"
+    value: 1000000
+    globalDefault: false
 # Values configuring Thingpark Enterprise deployment for Azure Kubernetes Service
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -521,4 +534,3 @@ global:
 node-red:
   persistence:
     size: 10Gi
-    storageClass: "thingpark-csi-standard-lrs-xfs"

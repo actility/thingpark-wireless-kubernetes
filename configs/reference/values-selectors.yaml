@@ -1,12 +1,12 @@
-# Values configuring Thingpark Enterprise deployment for Amazon Elastic Kubernetes Service
+# Values configuring Thingpark deployment for Amazon Elastic Kubernetes Service
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-## Node selector for Thingpark Enterprise deployment on only 3 nodes
+## Node selector for Thingpark deployment on only 3 nodes
 nodeSelectorKey: &nodeSelectorKey "thingpark.actility.com/nodegroup-name"
 nodeSelectorValue: &nodeSelectorValue "tpw"
 nodeSelector: &nodeSelector
-    thingpark.enterprise.actility.com/nodegroup-name: *nodeSelectorValue
+    thingpark.actility.com/nodegroup-name: *nodeSelectorValue
 
 tolerations: &tolerations
   - key: *nodeSelectorKey
@@ -83,6 +83,9 @@ acmeSolvers:
 cups-server:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
+db-manager:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
 locsolver:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
@@ -153,3 +156,10 @@ wlogger:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
 
+# To reconfigure the thingpark-enterprise-controller
+priorityClasss:
+  dataPath:
+    name: thingpark-data-path
+    description: "PriorityClass for data path pods. Value must be the highest of both data/application stack"
+    value: 1000000
+    globalDefault: false

@@ -3,7 +3,7 @@ global:
     maxConnections: 20
 
 kafka-cluster:
-  priorityClassName: thingpark-enterprise-data
+  priorityClassName: thingpark-data
   kafka:
     resources:
       limits:
@@ -20,16 +20,16 @@ mongo-replicaset:
     resources:
       limits:
         memory: 14620Mi
-    priorityClassName: thingpark-enterprise-data
+    priorityClassName: thingpark-data
 
   arbiter:
     resources:
       limits:
         memory: 200Mi
-    priorityClassName: thingpark-enterprise-data
+    priorityClassName: thingpark-data
 
 zookeeper:
-  priorityClassName: thingpark-enterprise-data
+  priorityClassName: thingpark-data
   resources:
     limits:
       memory: 150Mi
@@ -37,7 +37,7 @@ zookeeper:
       memory: 150Mi
 
 mariadb-galera:
-  priorityClassName: thingpark-enterprise-data
+  priorityClassName: thingpark-data
   resources:
     limits:
       memory: 1520Mi
@@ -183,7 +183,7 @@ mariadb-galera:
     plugin_load_add=auth_pam
 
 lrc:
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   replicaCount: 2
   lrc:
     resources:
@@ -212,21 +212,21 @@ lrc:
         memory: 80Mi
 
 node-red:
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   replicaCount: 1
   resources:
     limits:
       memory: 160Mi
 
 sql-proxy:
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   replicaCount: 2
   resources:
     limits:
       memory: 240Mi
 
 lrc-proxy:
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   replicaCount: 2
   resources:
     limits:
@@ -324,7 +324,7 @@ task-notif-ws:
       memory: 480Mi
 
 tpx-flow:
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   engine:
     replicaCount: 2
     resources:
@@ -352,7 +352,7 @@ tpx-flow:
         memory: 480Mi
 
 tp-dx:
-  priorityClassName: thingpark-enterprise-data-path
+  priorityClassName: thingpark-data-path
   replicaCount: 2
   resources:
     limits:
@@ -388,7 +388,7 @@ shellinabox:
 # Configuration for controllers
 ingress-nginx:
   controller:
-    priorityClassName: thingpark-enterprise-data-path
+    priorityClassName: thingpark-data-path
     resources:
       limits:
         memory: 384Mi

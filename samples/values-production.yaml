@@ -1,0 +1,272 @@
+# Mandatory values & additional usual values to define for a Thingpark Enterprise helm release.
+# Advanced settings detailed in chart values file
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  ### INSTALLATION ID ###
+  # Provided by Actility
+  installationId: &installationId "" # MANDATORY
+  ### FEATURE ACTIVATION ###
+  # Defaults disable Node Red 
+  # featuresActivation:
+  #   dxApi: true
+  #   iotFlow: true
+  #   nodeRed: false
+  ### MAIL SETTINGS ###
+  # Default configuration not need any mail relay
+  outgoingMail: {}
+    ## SMTP enabled configuration sample
+    # outgoingMail: 
+    #   smtpServer: "smtp.example.com"
+    #   smtpAuth:
+    #     login: "user"
+    #     password: "pass"
+    #   port: "465"
+    #   noReplyEmail: "noreply@example.com"
+    #   smtpSecurity: ssl
+    ## Maximum time in minutes before an action permit sent by a user (e.g. forgot password e-mail) is expired. 
+    ## This value is recommended to be short because it is expected that the user would react to self-created action quickly.
+    #   actionTokenGeneratedByUserLifespan: 15
+    ## Maximum time in minutes before an action permit sent to a user by admin (e.g. account creation) is expired. 
+    ## This value is recommended to be long to allow admins send e-mails for users that are currently offline
+    #   actionTokenGeneratedByAdminLifespan: 60
+  ### AS SECURITY LEVEL ###
+  # When set to 'strict' (recommanded), auto-signed certificates are rejected
+  asSecurity: strict
+  ### DNS HOSTNAME ###
+  # MANDATORY: Defines the URL used to access the portal GUI
+  dnsHostname: &dnsHostname "enterprise.actility.local" 
+
+  ### MAP SERVICE ###
+  # External Map service configuration
+  mapService: {}
+  # Google maps as map service
+  # mapService:
+  #   defaultLocation: "" 
+  #   api: "gmaps"
+  #   apiKey: ""
+  ## Openstreet maps config sample
+  # mapService: 
+  #   defaultLocation: ""
+  #   api: "osm"
+  #   osmTile: ""
+  #   osmNominatim: ""
+
+  ### LORA CONFIGURATION ###
+  # MANDATORY: configure Lora networking regarding you use case 
+  # WARNING : This parameter must be set at initial configuration of TPE Platform. Changing it afterwards can generate malfunction between the devices and the base stations
+  lora:
+    # List of ISM band. Must not be changed once base stations and devices are deployed.
+    ismBand: 
+    - "eu868"
+    # LoRaWAN; 24 bits network identifier.A dedicated NetID assigned by the LoRa Alliance.
+    netId: "000001"
+
+  ### THINGPARK REPOSITORY CONFIGURATION ###
+  # No additional configuration required when use production repositories
+  repositories:
+    containerImagesRegistry:
+      auth: 
+        username: *installationId
+        password: *installationId
+
+  ### SNMP CONFIGURATION ###
+  ## Configure device & base station alarms notifications
+  # snmp:
+  #   trap:
+  #     server: ""
+  #     community: "public"
+
+  ### THINGPARK WIRELESS SETTINGS ###
+  # wireless:
+  #  ## LoRaWAN traffic lifespan (days)
+  #  ## Set the lifespan of LoRaWAN uplink and downlink frames. 
+  #  ## The default value of 15 days is enough for a normal usage of ThingPark Enterprise. 
+  #  ## Extending the default value consumes hardware resources (RAM, Disk space), please contact your support before any change.
+  #   deviceHistoryExpiration: 15
+  
+  ### INBOUND: TLS CERTIFICATE ###
+  ## OPTION 1: Default configuration, A Selfsigned certificate is generated
+  # ingress:
+  #   ## Uncomment to override default behavior that configure global.dnsHostname as hosts for all ingress
+  #   hosts: []
+  #   ## BASICS STATION LNS: you have to update the LNS service port, uncomment next line
+  #   lnsPublicPort: 4443
+  #   baseStation:
+  #     ## Hash of the password configured in the base stations to connect the key-installer service. 
+  #     ## The hash must be provided in the SHA512 format, for example using the openssl passwd -6 command. 
+  #     ## This password should be set only if base stations are flashed with custom images.
+  #     keyInstallerPasswordHash: 
+  #     ## Set an alternative fqdn to use for base stations endpoints. It configure both IEC over TLS and LNS endpoints. 
+  #     fqdn:
+  ## OPTION 2: Using a externally generated certificate
+  ## Warning: global.ingress.tls.issuer.certificate must include server certificate first, and next the chain of trust
+  # ingress:
+  #   ## Uncomment to override default behavior that configure global.dnsHostname as hosts for all ingress
+  #   hosts: []
+  #   ## BASICS STATION LNS: you have to update the LNS service port, uncomment next line
+  #   lnsPublicPort: 4443
+  #   ## BASE STATION CONFIGURATION ## 
+  #   baseStation:
+  #     ## Hash of the password configured in the base stations to connect the key-installer service. 
+  #     ## The hash must be provided in the SHA512 format, for example using the openssl passwd -6 command. 
+  #     ## This password should be set only if base stations are flashed with custom images.
+  #     keyInstallerPasswordHash: 
+  #     ## Set an alternative fqdn to use for base stations endpoints. It configure both IEC over TLS and LNS endpoints.
+  #     ## When Basics Station is used, the server certificate  below should use both global.dnsHostname and baseStation.fqdn as dnsNames (SAN)
+  #     fqdn:
+  #   tls:
+  #     issuer: "external"
+  #     ## Must include server certificate first, and next the chain of trust
+  #     certificate: |
+  #       -----BEGIN CERTIFICATE-----
+  #       -----END CERTIFICATE-----
+  #       -----BEGIN CERTIFICATE-----
+  #       -----END CERTIFICATE-----
+  #     key: | 
+  #       -----BEGIN PRIVATE KEY-----
+  #       -----END PRIVATE KEY-----
+  #     ## Root certificate of authority that have issued server certiticate
+  #     caCertificate: | 
+  #       -----BEGIN PRIVATE KEY-----
+  #       -----END PRIVATE KEY-----
+  ## OPTION 3: Letsencrypt issued certificate. Uncomment acmeSolvers only if you want to use other challenge like dns
+  # ingress:
+  #   ## Uncomment to override default behavior that configure global.dnsHostname as hosts for all ingress
+  #   hosts: []
+  #   ## BASICS STATION LNS: you have to update the LNS service port, uncomment next line
+  #   lnsPublicPort: 4443
+  #   ## BASE STATION CONFIGURATION ## 
+  #   baseStation:
+  #     ## Hash of the password configured in the base stations to connect the key-installer service. 
+  #     ## The hash must be provided in the SHA512 format, for example using the openssl passwd -6 command. 
+  #     ## This password should be set only if base stations are flashed with custom images.
+  #     keyInstallerPasswordHash: 
+  #     ## Set an alternative fqdn to use for base stations endpoints. It configure both IEC over TLS and LNS endpoints. 
+  #     fqdn:
+  #   tls:
+  #     issuer: "letsencrypt"
+  #     acmeEmail: foo@example.com
+  #     # acmeSolvers:
+  #     # - http01:
+  #     #     ingress:
+  #     #       class: nginx-tpe
+  #     ## Root certificate of authority that have issued server certiticate
+  #     caCertificate: | 
+  #       -----BEGIN PRIVATE KEY-----
+  #       -----END PRIVATE KEY-----
+
+### BACKUP CONFIGURATION ###
+## OPTIONAL: A storage volume is required for manual or automated
+## OPTION 1: Configuration to use a minio local deployment ( https://docs.min.io/)
+#   backup:
+#     schedule: "30 2 * * *"
+#     s3Compat: 
+#       url: http://minio.thingpark-enterprise-tools.svc:9000
+#       accessKey: minio
+#       secretAccessKey: minio123
+#       bucket: "thingpark-enterprise-backup"
+
+## OPTION 2: Configuration to use AMAZON S3 bucket
+## accessKey and secretAccessKey are optional. If not provided, EKS Node Group IAM Role must allow get/put to S3 backup bucket
+#   backup:
+#     schedule: "30 2 * * *"
+#     amazon:
+#       accessKey: 
+#       secretAccessKey: 
+#       region: us-east-2
+#       bucket: "thingpark-enterprise-backup"
+
+## OPTION 3: Configuration to use Azure blob storage
+#   backup:
+#     schedule: "30 2 * * *"
+#     azure:
+#       resourceGroup: <resource group>
+#       storageAccount: <storage account>
+#       blobContainer: thingpark-enterprise-backup
+#       cloudName: AzurePublicCloud  # Available values: AzurePublicCloud AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud
+#       subscriptionId: <>
+#       tenantId: <>
+#       clientId: <>
+#       clientSecret: <>
+
+# For the OPTION 1 Selfsigned certificate, next block should be uncommented
+# Require a public access to ingress and a resolved FQDN 
+# tp-gui:
+#   ingress:
+#     items:
+#       gui:
+#         annotations:
+#           cert-manager.io/issuer: "internal-ca-issuer"
+
+# For the OPTION 3 Letencrypt, next block should be uncommented
+# Require a public access to ingress and a resolved FQDN 
+# tp-gui:
+#   ingress:
+#     items:
+#       gui:
+#         annotations:
+#           cert-manager.io/issuer: "letsencrypt-prod"
+
+
+### INBOUND: FLOW & DNS ###
+# Configure ingress-nginx controller for DNS and Inbound base station flows
+ingress-nginx:
+# MANDATORY: configure ingress for inbound base stations:
+# <namespace> MUST be replaced by your deployment namespace
+  tcp:
+    # Support ssh inbound
+    2022: <namespace>/support-inbound:22
+    # LRC tls inbounds
+    3001: <namespace>/lrc-proxy:3001
+    3101: <namespace>/lrc-proxy:3101
+    # LRC sftp tls inbound
+    3002: <namespace>/lrc-proxy:3002
+    # Uncomment to expose Basics Station LNS endpoint
+    # 4443: <namespace>/lrc-proxy-lns:8443
+
+# OPTIONAL: DNS dynamic provisioning
+## OPTION1: AZURE controller configuration to attach DNS to loadbalancer 
+## dnsHostname should be composed of Azure DNS alias followed by Azure region domain name (i.e. thingpark-enterprise.westeurope.cloudapp.azure.com)
+#  controller:
+#    service:
+#      annotations:
+#        service.beta.kubernetes.io/azure-dns-label-name: thingpark-wireless
+## OPTION2: AMAZON Route 53 subdomain using external-dns controller
+## Use a comma list to use optional dashboard : external-dns.alpha.kubernetes.io/hostname: enterprise.mycompany.org,dashboard.mycompany.org
+#   controller:
+#     service:
+#       annotations:
+#         external-dns.alpha.kubernetes.io/hostname: *dnsHostname
+
+
+### DATA STACK COMPONENTS CONFIGURAION ###
+# Default values for thingpark-wireless.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# mongo-replicaset:
+#   accounts:
+#     admin:
+#       username: clusterAdmin
+#       password: "actility"
+#     userAdmin:
+#       username: userAdmin
+#       password: "actility"
+#     userBackup:
+#       username: backup
+#       password: "actility"
+#     clusterMonitor:
+#       username: clusterMonitor
+#       password: "actility"
+#     pmm:
+#       username: pmm
+#       password: "actility"
+
+
+
+# mariadb-galera:
+#   rootUser:
+#     password: "actility"

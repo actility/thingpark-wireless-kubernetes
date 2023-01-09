@@ -241,6 +241,14 @@ ingress-nginx:
 #         external-dns.alpha.kubernetes.io/hostname: *dnsHostname
 
 
+## Keycloak ReCAPTCHA configuration. ReCAPTCHA is defaultly disabled.
+## Add valid key here to enable it. Can't be disabled after a first configuration
+# idp:
+#   captcha:
+#     publicKey: ""
+#     privateKey: ""
+
+
 ### DATA STACK COMPONENTS CONFIGURAION ###
 # Default values for thingpark-wireless.
 # This is a YAML-formatted file.

@@ -193,6 +193,8 @@ cups-server:
   priorityClassName: thingpark-services
   replicaCount: 1
   resources:
+    requests:
+      memory: 45Mi
     limits:
       memory: 60Mi
 
@@ -384,6 +386,7 @@ tpx-flow:
         memory: 45Mi
       limits:
         memory: 60Mi
+
 twa:
   priorityClassName: thingpark-services
   replicaCount: 2

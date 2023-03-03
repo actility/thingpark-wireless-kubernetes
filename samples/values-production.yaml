@@ -1,4 +1,4 @@
-# Mandatory values & additional usual values to define for a Thingpark Enterprise helm release.
+# Mandatory values & additional usual values to define for a Thingpark Wireless helm release.
 # Advanced settings detailed in chart values file
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -36,7 +36,7 @@ global:
   asSecurity: strict
   ### DNS HOSTNAME ###
   # MANDATORY: Defines the URL used to access the portal GUI
-  dnsHostname: &dnsHostname "enterprise.actility.local" 
+  dnsHostname: &dnsHostname "wireless.actility.local" 
 
   ### MAP SERVICE ###
   # External Map service configuration
@@ -71,6 +71,13 @@ global:
         username: *installationId
         password: *installationId
 
+  oidcSso:
+    authServer:
+      scheme: https
+      fqdn: *dnsHostname
+      port: 443
+      path: /auth
+
   ### SNMP CONFIGURATION ###
   ## Configure device & base station alarms notifications
   # snmp:
@@ -82,7 +89,7 @@ global:
   # wireless:
   #  ## LoRaWAN traffic lifespan (days)
   #  ## Set the lifespan of LoRaWAN uplink and downlink frames. 
-  #  ## The default value of 15 days is enough for a normal usage of ThingPark Enterprise. 
+  #  ## The default value of 15 days is enough for a normal usage of ThingPark Wireless. 
   #  ## Extending the default value consumes hardware resources (RAM, Disk space), please contact your support before any change.
   #   deviceHistoryExpiration: 15
   
@@ -163,10 +170,10 @@ global:
 #   backup:
 #     schedule: "30 2 * * *"
 #     s3Compat: 
-#       url: http://minio.thingpark-enterprise-tools.svc:9000
+#       url: http://minio.thingpark-wireless-tools.svc:9000
 #       accessKey: minio
 #       secretAccessKey: minio123
-#       bucket: "thingpark-enterprise-backup"
+#       bucket: "thingpark-wireless-backup"
 
 ## OPTION 2: Configuration to use AMAZON S3 bucket
 ## accessKey and secretAccessKey are optional. If not provided, EKS Node Group IAM Role must allow get/put to S3 backup bucket
@@ -176,7 +183,7 @@ global:
 #       accessKey: 
 #       secretAccessKey: 
 #       region: us-east-2
-#       bucket: "thingpark-enterprise-backup"
+#       bucket: "thingpark-wireless-backup"
 
 ## OPTION 3: Configuration to use Azure blob storage
 #   backup:
@@ -184,16 +191,21 @@ global:
 #     azure:
 #       resourceGroup: <resource group>
 #       storageAccount: <storage account>
-#       blobContainer: thingpark-enterprise-backup
+#       blobContainer: thingpark-wireless-backup
 #       cloudName: AzurePublicCloud  # Available values: AzurePublicCloud AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud
 #       subscriptionId: <>
 #       tenantId: <>
 #       clientId: <>
 #       clientSecret: <>
 
+#   Uncomment to use a custom trustore put in a Secret in following way:
+#   kubectl create secret generic thingpark-ca-trusts --from-literal=truststore_password=changeme --from-file=truststore.jks=cacerts
+#   truststoreSecretName: "thingpark-ca-trusts"
+
+
 # For the OPTION 1 Selfsigned certificate, next block should be uncommented
 # Require a public access to ingress and a resolved FQDN 
-# tp-gui:
+# tpw-guis:
 #   ingress:
 #     items:
 #       gui:
@@ -202,7 +214,7 @@ global:
 
 # For the OPTION 3 Letencrypt, next block should be uncommented
 # Require a public access to ingress and a resolved FQDN 
-# tp-gui:
+# tpw-guis:
 #   ingress:
 #     items:
 #       gui:
@@ -228,13 +240,13 @@ ingress-nginx:
 
 # OPTIONAL: DNS dynamic provisioning
 ## OPTION1: AZURE controller configuration to attach DNS to loadbalancer 
-## dnsHostname should be composed of Azure DNS alias followed by Azure region domain name (i.e. thingpark-enterprise.westeurope.cloudapp.azure.com)
+## dnsHostname should be composed of Azure DNS alias followed by Azure region domain name (i.e. thingpark-wireless.westeurope.cloudapp.azure.com)
 #  controller:
 #    service:
 #      annotations:
 #        service.beta.kubernetes.io/azure-dns-label-name: thingpark-wireless
 ## OPTION2: AMAZON Route 53 subdomain using external-dns controller
-## Use a comma list to use optional dashboard : external-dns.alpha.kubernetes.io/hostname: enterprise.mycompany.org,dashboard.mycompany.org
+## Use a comma list to use optional dashboard : external-dns.alpha.kubernetes.io/hostname: wireless.mycompany.org,dashboard.mycompany.org
 #   controller:
 #     service:
 #       annotations:

@@ -1,0 +1,33 @@
+global:
+  storageType: "alicloud-stdssd"
+
+## Persistent Volume Claim setting
+lrc:
+  persistence:
+    storageClass: "thingpark-stdssd-ext4"
+    ftpStorageClass: "thingpark-stdssd-xfs"
+
+## Data stack configuration
+kafka-cluster:
+  kafka:
+    persistence:
+      local: false
+      storageClass: "thingpark-stdssd-xfs"
+
+  zookeeper:
+    persistence:
+      local: false
+      storageClass: "thingpark-stdssd-xfs"
+
+mongo-replicaset:
+  persistence:
+    local: false
+    storageClass: "thingpark-stdssd-xfs"
+
+zookeeper:
+  persistence:
+    storageClass: "thingpark-stdssd-xfs"
+
+mariadb-galera:
+  persistence:
+    storageClass: "thingpark-stdssd-xfs"

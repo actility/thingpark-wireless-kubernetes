@@ -38,16 +38,16 @@ mongo-replicaset:
     image:
       # repository: "<private-registry>"
   accounts:
-    admin:
-      password: "<custom-password>"
-    userAdmin:
-      password: "<custom-password>"
-    userBackup:
-      password: "<custom-password>"
-    clusterMonitor:
-      password: "<custom-password>"
-    pmm:
-      password: "<custom-password>"
+    # admin:
+    #   password: "<custom-password>"
+    # userAdmin:
+    #   password: "<custom-password>"
+    # userBackup:
+    #   password: "<custom-password>"
+    # clusterMonitor:
+    #   password: "<custom-password>"
+    # pmm:
+    #   password: "<custom-password>"
 
 kafka-cluster:
   imagePullSecrets: 

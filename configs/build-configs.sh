@@ -1,5 +1,5 @@
 # Azure profiles
-flavors=(azure amazon)
+flavors=(azure amazon alicloud)
 segment=(l)
 unsupported=()
 

@@ -4,9 +4,11 @@
 # Declare variables to be passed into your templates.
 
 global:
+  imagePullSecrets:
+   - name: "thingpark-image-pull-secret"
   ### INSTALLATION ID ###
   # Provided by Actility
-  installationId: &installationId "" # MANDATORY
+  installationId: "" # MANDATORY
   ### FEATURE ACTIVATION ###
   # Defaults disable Node Red 
   # featuresActivation:
@@ -36,8 +38,8 @@ global:
   asSecurity: strict
   ### DNS HOSTNAME ###
   # MANDATORY: Defines the URL used to access the portal GUI
-  dnsHostname: &dnsHostname "wireless.actility.local" 
-
+  dnsHostname: &dnsHostname "wireless.thingpark.local" 
+  sharedOperatorDnsHostname: &sharedOperatorDnsHostname "shared.thingpark.local"
   ### MAP SERVICE ###
   # External Map service configuration
   mapService: {}
@@ -67,9 +69,7 @@ global:
   # No additional configuration required when use production repositories
   repositories:
     containerImagesRegistry:
-      auth: 
-        username: *installationId
-        password: *installationId
+      # fqdn: "<private-registry>"
 
   oidcSso:
     authServer:
@@ -93,11 +93,14 @@ global:
   #  ## Extending the default value consumes hardware resources (RAM, Disk space), please contact your support before any change.
   #   deviceHistoryExpiration: 15
   
+  ingress:
+  ### INGRESS HOSTS CUSTOMIZATION (optional) ###
+  ## Uncomment next hosts block to enable shared operator guis/api access
+  #   hosts:
+  #     - *dnsHostname
+  #     - *sharedOperatorDnsHostname
   ### INBOUND: TLS CERTIFICATE ###
   ## OPTION 1: Default configuration, A Selfsigned certificate is generated
-  # ingress:
-  #   ## Uncomment to override default behavior that configure global.dnsHostname as hosts for all ingress
-  #   hosts: []
   #   ## BASICS STATION LNS: you have to update the LNS service port, uncomment next line
   #   lnsPublicPort: 4443
   #   baseStation:
@@ -109,9 +112,6 @@ global:
   #     fqdn:
   ## OPTION 2: Using a externally generated certificate
   ## Warning: global.ingress.tls.issuer.certificate must include server certificate first, and next the chain of trust
-  # ingress:
-  #   ## Uncomment to override default behavior that configure global.dnsHostname as hosts for all ingress
-  #   hosts: []
   #   ## BASICS STATION LNS: you have to update the LNS service port, uncomment next line
   #   lnsPublicPort: 4443
   #   ## BASE STATION CONFIGURATION ## 
@@ -139,9 +139,6 @@ global:
   #       -----BEGIN PRIVATE KEY-----
   #       -----END PRIVATE KEY-----
   ## OPTION 3: Letsencrypt issued certificate. Uncomment acmeSolvers only if you want to use other challenge like dns
-  # ingress:
-  #   ## Uncomment to override default behavior that configure global.dnsHostname as hosts for all ingress
-  #   hosts: []
   #   ## BASICS STATION LNS: you have to update the LNS service port, uncomment next line
   #   lnsPublicPort: 4443
   #   ## BASE STATION CONFIGURATION ## 
@@ -202,6 +199,81 @@ global:
 #   kubectl create secret generic thingpark-ca-trusts --from-literal=truststore_password=changeme --from-file=truststore.jks=cacerts
 #   truststoreSecretName: "thingpark-ca-trusts"
 
+### DATABASE PASSWORD OVERRINDING ###
+  # sqlDatabase:
+  #   accounts:
+  #     admin:
+  #       username: root
+  #       password: ""
+  #     maintenance:
+  #       username: maintenance
+  #       password: "maintenance"
+  #     twa:
+  #       username: "twa"
+  #       password: ""
+  #     smp:
+  #       username: "smp"
+  #       password: ""
+  #     ejbca:
+  #       username: "ejbca"
+  #       password: ""
+  #     wlogger:
+  #       username: "wlogger"
+  #       password: ""
+  #     tpdx:
+  #       username: "tpdx"
+  #       password: ""
+  #     tpdxKeystore:
+  #       username: tpdx_keystore
+  #       password: ""
+  #     tpdxDataflows:
+  #       username: tpdx_dataflows
+  #       password: ""
+  #     tpxConnector:
+  #       username: tpx_connector
+  #       password: ""
+  #     tpxFlowHub:
+  #       username: tpx_flow_hub
+  #       password: ""
+  #     tpxFlowApi:
+  #       username: tpx_flow_api 
+  #       password: ""
+  #     tpxFlowBridge:
+  #       username: tpx_flow_bridge
+  #       password: ""
+  #     tpxFlowSupervisor:
+  #       username: tpx_flow_supervisor
+  #       password: ""
+
+  # mongoDatabase:
+  #   accounts:
+  #     admin:
+  #       username: clusterAdmin
+  #       password: ""
+  #     userAdmin:
+  #       username: userAdmin
+  #       password: ""
+  #     userBackup:
+  #       username: backup
+  #       password: ""
+  #     twa:
+  #       username: twa
+  #       password: ""
+  #     smp:
+  #       username: smplite
+  #       password: ""
+  #     rfscan:
+  #       username: rfscan 
+  #       password: ""
+  #     netSurvey:
+  #       username: "netsurvey"
+  #       password: ""
+  #     driver:
+  #       username: "driver"
+  #       password: ""
+  #     keyInstaller:
+  #       username: key-installer
+  #       password: ""
 
 # For the OPTION 1 Selfsigned certificate, next block should be uncommented
 # Require a public access to ingress and a resolved FQDN 
@@ -221,10 +293,11 @@ global:
 #         annotations:
 #           cert-manager.io/issuer: "letsencrypt-prod"
 
-
 ### INBOUND: FLOW & DNS ###
 # Configure ingress-nginx controller for DNS and Inbound base station flows
 ingress-nginx:
+  imagePullSecrets: 
+    - name: "thingpark-image-pull-secret"
 # MANDATORY: configure ingress for inbound base stations:
 # <namespace> MUST be replaced by your deployment namespace
   tcp:
@@ -238,6 +311,13 @@ ingress-nginx:
     # Uncomment to expose Basics Station LNS endpoint
     # 4443: <namespace>/lrc-proxy-lns:8443
 
+  controller:
+    # image:
+    #   registry: "<private-registry>"
+    # admissionWebhooks:
+    #   patch:
+    #     image:
+    #       registry: "<private-registry>"
 # OPTIONAL: DNS dynamic provisioning
 ## OPTION1: AZURE controller configuration to attach DNS to loadbalancer 
 ## dnsHostname should be composed of Azure DNS alias followed by Azure region domain name (i.e. thingpark-wireless.westeurope.cloudapp.azure.com)
@@ -260,33 +340,19 @@ ingress-nginx:
 #     publicKey: ""
 #     privateKey: ""
 
+cert-manager:
+  image:
+    # registry: "<private-registry>"
+  webhook:
+    image:
+      # registry: "<private-registry>"
+  cainjector:
+    image:
+      # registry: "<private-registry>"
+  acmesolver:
+    image:
+      # registry: "<private-registry>"
+  startupapicheck:
+    image:
+      # registry: "<private-registry>"
 
-### DATA STACK COMPONENTS CONFIGURAION ###
-# Default values for thingpark-wireless.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-
-# mongo-replicaset:
-#   accounts:
-#     admin:
-#       username: clusterAdmin
-#       password: "actility"
-#     userAdmin:
-#       username: userAdmin
-#       password: "actility"
-#     userBackup:
-#       username: backup
-#       password: "actility"
-#     clusterMonitor:
-#       username: clusterMonitor
-#       password: "actility"
-#     pmm:
-#       username: pmm
-#       password: "actility"
-
-
-
-# mariadb-galera:
-#   rootUser:
-#     password: "actility"

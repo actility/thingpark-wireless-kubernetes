@@ -1,0 +1,26 @@
+lrc:
+  persistence:
+    storageClass: "thingpark-csi-gp2-ext4"
+    ftpStorageClass: "thingpark-csi-gp2-xfs"
+
+kafka-cluster:
+  kafka:
+    persistence:
+      storageClass: "thingpark-csi-gp2-xfs"
+
+  zookeeper:
+    persistence:
+      storageClass: "thingpark-csi-gp2-xfs"
+
+mongo-replicaset:
+  persistence:
+    storageClass: "thingpark-csi-gp2-xfs"
+
+zookeeper:
+  persistence:
+    storageClass: "thingpark-csi-gp2-xfs"
+
+mariadb-galera:
+  persistence:
+    storageClass: "thingpark-csi-gp2-xfs"
+

@@ -1,0 +1,86 @@
+kafka-cluster:
+  priorityClassName: thingpark-data-path
+
+mongo-replicaset:
+  replicaSet:
+    priorityClassName: thingpark-data
+
+  arbiter:
+    priorityClassName: thingpark-other
+
+zookeeper:
+  priorityClassName: thingpark-data-path
+
+mariadb-galera:
+  priorityClassName: thingpark-data
+
+lrc:
+  priorityClassName: thingpark-data-path
+
+sql-proxy:
+  priorityClassName: thingpark-data-path
+
+lrc-proxy:
+  priorityClassName: thingpark-data-path
+
+support:
+  priorityClassName: thingpark-other
+
+wireless-pki:
+  priorityClassName: thingpark-other
+
+cups-server:
+  priorityClassName: thingpark-other
+
+locsolver:
+  priorityClassName: thingpark-other
+
+tpw-guis:
+  priorityClassName: thingpark-other
+
+smp:
+  priorityClassName: thingpark-other
+
+keycloak:
+  priorityClassName: thingpark-other
+
+twa:
+  priorityClassName: thingpark-other
+
+twa-admin:
+  priorityClassName: thingpark-other
+
+twa-dev:
+  priorityClassName: thingpark-other
+
+twa-ran:
+  priorityClassName: thingpark-other
+
+twa-task-res:
+  priorityClassName: thingpark-other
+
+twa-alarm-notif:
+  priorityClassName: thingpark-other
+
+task-notif-ws:
+  priorityClassName: thingpark-other
+
+tpx-flow:
+  priorityClassName: thingpark-data-path
+
+tpdx:
+  priorityClassName: thingpark-data-path
+
+nssa:
+  priorityClassName: thingpark-other
+
+wlogger:
+  priorityClassName: thingpark-other
+
+shellinabox:
+  priorityClassName: thingpark-other
+
+ingress-nginx:
+  controller:
+    priorityClassName: thingpark-data-path
+

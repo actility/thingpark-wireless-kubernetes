@@ -1,12 +1,12 @@
-# Values configuring Thingpark deployment for Amazon Elastic Kubernetes Service
+# Values configuring Thingpark Enterprise deployment for Amazon Elastic Kubernetes Service
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-## Node selector for Thingpark deployment on only 3 nodes
-nodeSelectorKey: &nodeSelectorKey "thingpark.actility.com/nodegroup-name"
-nodeSelectorValue: &nodeSelectorValue "tpw"
+## Node selector for Thingpark Enterprise deployment on only 3 nodes
+nodeSelectorKey: &nodeSelectorKey "thingpark.enterprise.actility.com/nodegroup-name"
+nodeSelectorValue: &nodeSelectorValue "tpe"
 nodeSelector: &nodeSelector
-    thingpark.actility.com/nodegroup-name: *nodeSelectorValue
+    thingpark.enterprise.actility.com/nodegroup-name: *nodeSelectorValue
 
 tolerations: &tolerations
   - key: *nodeSelectorKey
@@ -26,6 +26,9 @@ strimzi-kafka-operator:
 mariadb-galera:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
+zookeeper:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
 kafka-cluster:
   tolerations: *tolerations
   affinity:
@@ -37,6 +40,7 @@ kafka-cluster:
             operator: In
             values:
             - *nodeSelectorValue
+
 mongo-replicaset:
   replicaSet:
     nodeSelector: *nodeSelector
@@ -44,9 +48,6 @@ mongo-replicaset:
   arbiter:
     nodeSelector: *nodeSelector
     tolerations: *tolerations
-zookeeper:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
 
 
 ## thingpark-enterprise-controllers
@@ -80,43 +81,31 @@ acmeSolvers:
             nodeSelector: *nodeSelector
             tolerations: *tolerations
 
-cups-server:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
-db-manager:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
-locsolver:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
 lrc:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
-lrc-proxy:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
-nssa:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
-pum:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
-portal:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
-shellinabox:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
-smp:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
-support:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
 sql-proxy:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-tpw-guis:
+tp-gui:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+lrc-proxy:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+support:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+wireless-pki:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+cups-server:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+locsolver:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+smp-tpe:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
 twa:
@@ -125,13 +114,7 @@ twa:
 twa-admin:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-twa-alarm-notif:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
 twa-dev:
-  nodeSelector: *nodeSelector
-  tolerations: *tolerations
-twa-dev-task-fc:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
 twa-ran:
@@ -140,26 +123,30 @@ twa-ran:
 twa-task-res:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
+twa-alarm-notif:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
 task-notif-ws:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
 tpx-flow:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-tpdx:
+tp-dx:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-wireless-pki:
+node-red:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+nssa:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
 wlogger:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
-
-# To reconfigure the thingpark-enterprise-controller
-priorityClasss:
-  dataPath:
-    name: thingpark-data-path
-    description: "PriorityClass for data path pods. Value must be the highest of both data/application stack"
-    value: 1000000
-    globalDefault: false
+shellinabox:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+pum:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations

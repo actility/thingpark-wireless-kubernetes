@@ -18,11 +18,11 @@ strimzi-kafka-operator:
     imagePullSecrets: "thingpark-image-pull-secret"
     # registry: "<private-registry>"
 
-mariadb-galera:
-#  rootUser:
-#    password: "<custom-password>"
-  image:
-    # registry: "<private-registry>"
+# mariadb-galera:
+#   rootUser:
+#     password: "<custom-password>"
+#   image:
+#     registry: "<private-registry>"
 
 zookeeper:
   image:

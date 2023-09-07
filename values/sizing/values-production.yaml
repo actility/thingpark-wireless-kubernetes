@@ -646,4 +646,4 @@ ingress-nginx:
       requests:
         memory: 288Mi
       limits:
-        memory: 384Mi
+        memory: 800Mi

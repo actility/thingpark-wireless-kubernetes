@@ -1,0 +1,31 @@
+kafka-cluster:
+  kafka:
+    persistence:
+      storageClass: "thingpark-csi-premium-lrs-xfs"
+  zookeeper:
+    persistence:
+      storageClass: "thingpark-csi-premium-lrs-xfs"
+
+mongo-replicaset:
+  persistence:
+    storageClass: "thingpark-csi-premium-lrs-xfs"
+    ## Mongo volume must be oversized for xxl segment on azure to benefit of appropriate IO sizing 
+    # size: 999Gi
+
+zookeeper:
+  persistence:
+    storageClass: "thingpark-csi-premium-lrs-xfs"
+  
+mariadb-galera:
+  persistence:
+    storageClass: "thingpark-csi-premium-lrs-xfs"
+
+lrc:
+  persistence:
+    storageClass: "thingpark-csi-premium-lrs-ext4"
+    ftpStorageClass: "thingpark-csi-standard-lrs-xfs"
+
+node-red:
+  persistence:
+    storageClass: "thingpark-csi-standard-lrs-xfs"
+

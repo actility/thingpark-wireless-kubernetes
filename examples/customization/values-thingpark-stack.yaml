@@ -36,10 +36,15 @@ global:
   ### AS SECURITY LEVEL ###
   # When set to 'strict' (recommanded), auto-signed certificates are rejected
   asSecurity: strict
-  ### DNS HOSTNAME ###
+  ### OPERATOR ###
   # MANDATORY: Defines the URL used to access the portal GUI
-  dnsHostname: &dnsHostname "wireless.thingpark.local" 
-  sharedOperatorDnsHostname: &sharedOperatorDnsHostname "shared.thingpark.local"
+  operators:
+    default: 
+      domain: "wireless.thingpark.local"
+      # name: "Custom Operator Name"
+    thingpark:
+      domain: "shared.thingpark.local"
+
   ### MAP SERVICE ###
   # External Map service configuration
   mapService: {}
@@ -99,8 +104,6 @@ global:
   #   hosts:
   #     - *dnsHostname
   #     - *sharedOperatorDnsHostname
-  ### INBOUND: TLS CERTIFICATE ###
-  ## OPTION 1: Default configuration, A Selfsigned certificate is generated
   #   ## BASICS STATION LNS: you have to update the LNS service port, uncomment next line
   #   lnsPublicPort: 4443
   #   baseStation:
@@ -110,19 +113,10 @@ global:
   #     keyInstallerPasswordHash: 
   #     ## Set an alternative fqdn to use for base stations endpoints. It configure both IEC over TLS and LNS endpoints. 
   #     fqdn:
+  ### INBOUND: TLS CERTIFICATE ###
+  ## OPTION 1: Default configuration, A Selfsigned certificate is generated
   ## OPTION 2: Using a externally generated certificate
   ## Warning: global.ingress.tls.issuer.certificate must include server certificate first, and next the chain of trust
-  #   ## BASICS STATION LNS: you have to update the LNS service port, uncomment next line
-  #   lnsPublicPort: 4443
-  #   ## BASE STATION CONFIGURATION ## 
-  #   baseStation:
-  #     ## Hash of the password configured in the base stations to connect the key-installer service. 
-  #     ## The hash must be provided in the SHA512 format, for example using the openssl passwd -6 command. 
-  #     ## This password should be set only if base stations are flashed with custom images.
-  #     keyInstallerPasswordHash: 
-  #     ## Set an alternative fqdn to use for base stations endpoints. It configure both IEC over TLS and LNS endpoints.
-  #     ## When Basics Station is used, the server certificate  below should use both global.dnsHostname and baseStation.fqdn as dnsNames (SAN)
-  #     fqdn:
   #   tls:
   #     issuer: "external"
   #     ## Must include server certificate first, and next the chain of trust
@@ -139,23 +133,18 @@ global:
   #       -----BEGIN PRIVATE KEY-----
   #       -----END PRIVATE KEY-----
   ## OPTION 3: Letsencrypt issued certificate. Uncomment acmeSolvers only if you want to use other challenge like dns
-  #   ## BASICS STATION LNS: you have to update the LNS service port, uncomment next line
-  #   lnsPublicPort: 4443
-  #   ## BASE STATION CONFIGURATION ## 
-  #   baseStation:
-  #     ## Hash of the password configured in the base stations to connect the key-installer service. 
-  #     ## The hash must be provided in the SHA512 format, for example using the openssl passwd -6 command. 
-  #     ## This password should be set only if base stations are flashed with custom images.
-  #     keyInstallerPasswordHash: 
-  #     ## Set an alternative fqdn to use for base stations endpoints. It configure both IEC over TLS and LNS endpoints. 
-  #     fqdn:
   #   tls:
   #     issuer: "letsencrypt"
   #     acmeEmail: foo@example.com
-  #     # acmeSolvers:
-  #     # - http01:
-  #     #     ingress:
-  #     #       class: nginx-tpe
+  #     acmeEmail: foo@example.com
+  #       acmeSolvers:
+  #       - http01:
+  #           ingress:
+  #             class: nginx-tpe
+  #             podTemplate:
+  #               spec:
+  #                 imagePullSecrets:
+  #                 - name: thingpark-image-pull-secret
   #     ## Root certificate of authority that have issued server certiticate
   #     caCertificate: | 
   #       -----BEGIN PRIVATE KEY-----
@@ -335,7 +324,7 @@ ingress-nginx:
 
 ## Keycloak ReCAPTCHA configuration. ReCAPTCHA is defaultly disabled.
 ## Add valid key here to enable it. Can't be disabled after a first configuration
-# idp:
+# keycloak:
 #   captcha:
 #     publicKey: ""
 #     privateKey: ""

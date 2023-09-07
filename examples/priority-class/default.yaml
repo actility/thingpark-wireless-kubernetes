@@ -1,0 +1,24 @@
+
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: thingpark-other
+value: 999500
+globalDefault: false
+description: "PriorityClass for other services pods"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: thingpark-data
+value: 999800
+globalDefault: false
+description: "PriorityClass for data stack pods"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: thingpark-data-path
+value: 1000000
+globalDefault: false
+description: "PriorityClass for data path pods"

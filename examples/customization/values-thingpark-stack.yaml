@@ -329,19 +329,23 @@ ingress-nginx:
 #     publicKey: ""
 #     privateKey: ""
 
-cert-manager:
-  image:
-    # registry: "<private-registry>"
-  webhook:
-    image:
-      # registry: "<private-registry>"
-  cainjector:
-    image:
-      # registry: "<private-registry>"
-  acmesolver:
-    image:
-      # registry: "<private-registry>"
-  startupapicheck:
-    image:
-      # registry: "<private-registry>"
+# tpx-flow:
+#   kafka:
+#     topicConfigRetentionMs: 21600000 # connection topics retention duration between 6 hours (21600000 Ms) and 240 hours (864000000 Ms)
+
+# cert-manager:
+#   image:
+#     registry: "<private-registry>"
+#   webhook:
+#     image:
+#       registry: "<private-registry>"
+#   cainjector:
+#     image:
+#       registry: "<private-registry>"
+#   acmesolver:
+#     image:
+#       registry: "<private-registry>"
+#   startupapicheck:
+#     image:
+#       registry: "<private-registry>"
 

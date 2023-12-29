@@ -11,8 +11,8 @@ global:
 psmdb-operator:
   imagePullSecrets:
     - name: "thingpark-image-pull-secret"
-  image:
-    # repository: "<private-registry>/percona-server-mongodb-operator"
+  # image:
+  #   repository: "<private-registry>/percona-server-mongodb-operator"
 strimzi-kafka-operator:
   image:
     imagePullSecrets: "thingpark-image-pull-secret"
@@ -25,39 +25,39 @@ strimzi-kafka-operator:
 #     registry: "<private-registry>"
 
 zookeeper:
-  image:
-    # registry: "<private-registry>"
+  # image:
+  #   registry: "<private-registry>"
 
 mongo-replicaset:
   imagePullSecrets: 
   - name: "thingpark-image-pull-secret"
-  mongoDbInit:
-    image:
-      # repository: "<private-registry>"
-  mongoDbServer:
-    image:
-      # repository: "<private-registry>"
-  accounts:
-    # admin:
-    #   password: "<custom-password>"
-    # userAdmin:
-    #   password: "<custom-password>"
-    # userBackup:
-    #   password: "<custom-password>"
-    # clusterMonitor:
-    #   password: "<custom-password>"
-    # pmm:
-    #   password: "<custom-password>"
+  # mongoDbInit:
+  #   image:
+  #     repository: "<private-registry>"
+  # mongoDbServer:
+  #   image:
+  #      repository: "<private-registry>"
+  # accounts:
+  #   admin:
+  #     password: "<custom-password>"
+  #   userAdmin:
+  #     password: "<custom-password>"
+  #   userBackup:
+  #     password: "<custom-password>"
+  #   clusterMonitor:
+  #     password: "<custom-password>"
+  #   pmm:
+  #     password: "<custom-password>"
 
 kafka-cluster:
   imagePullSecrets: 
   - name: "thingpark-image-pull-secret"
-  kafka:
-    image:
-      # repository: "<private-registry>"
-  zookeeper:
-    image:
-      # repository: "<private-registry>"
-  operator:
-    image:
-      # repository: "<private-registry>"
+  # kafka:
+  #   image:
+  #     repository: "<private-registry>"
+  # zookeeper:
+  #   image:
+  #     repository: "<private-registry>"
+  # operator:
+  #   image:
+  #     repository: "<private-registry>"

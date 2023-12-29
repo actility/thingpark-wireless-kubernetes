@@ -344,7 +344,7 @@ cups-server:
       cpu: 10m
       memory: 40Mi
     limits:
-      memory: 55Mi
+      memory: 80Mi
 
 locsolver:
   replicaCount: 1
@@ -443,7 +443,7 @@ twa-admin:
       cpu: 20m
       memory: 40Mi
     limits:
-      memory: 40Mi
+      memory: 80Mi
 
 twa-dev:
   replicaCount: 2

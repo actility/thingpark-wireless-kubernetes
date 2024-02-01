@@ -374,9 +374,9 @@ smp:
   resources:
     requests:
       cpu: 250m
-      memory: 880Mi
+      memory: 1536Mi
     limits:
-      memory: 950Mi
+      memory: 2048Mi
 
 keycloak:
   replicaCount: 1

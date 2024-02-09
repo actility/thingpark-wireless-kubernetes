@@ -562,7 +562,7 @@ tpx-flow:
         cpu: 10m
         memory: 20Mi
       limits:
-        memory: 20Mi
+        memory: 40Mi
 
 tpdx:
   sqlUpgrade:

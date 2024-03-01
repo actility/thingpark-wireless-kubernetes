@@ -344,7 +344,7 @@ cups-server:
       cpu: 10m
       memory: 40Mi
     limits:
-      memory: 55Mi
+      memory: 80Mi
 
 locsolver:
   replicaCount: 1
@@ -374,9 +374,9 @@ smp:
   resources:
     requests:
       cpu: 250m
-      memory: 880Mi
+      memory: 1536Mi
     limits:
-      memory: 950Mi
+      memory: 2048Mi
 
 keycloak:
   replicaCount: 1
@@ -443,7 +443,7 @@ twa-admin:
       cpu: 20m
       memory: 40Mi
     limits:
-      memory: 40Mi
+      memory: 80Mi
 
 twa-dev:
   replicaCount: 2
@@ -562,7 +562,7 @@ tpx-flow:
         cpu: 10m
         memory: 20Mi
       limits:
-        memory: 20Mi
+        memory: 40Mi
 
 tpdx:
   sqlUpgrade:

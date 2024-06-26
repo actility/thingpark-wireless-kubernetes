@@ -56,9 +56,9 @@ zookeeper:
   resources:
     requests:
       cpu: 150m
-      memory: 112Mi
-    limits:
       memory: 150Mi
+    limits:
+      memory: 250Mi
 
 mariadb-galera:
   persistence:
